@@ -165,3 +165,79 @@ const p = createEl({ type: 'p', content: 'Hello World', attributes: { class: 'pa
 const title = createEl({ type: 'h2', content: p, attributes: { class: 'example' } })
 document.body.append(title)
 ```
+# Функція `setData`
+
+Функція `setData` використовується для перевірки значення за допомогою регулярного виразу та повернення об'єкта з інформацією про перевірку.
+## Сигнатура
+
+```javascript
+function setData(regex, value, message) {
+    const valid = regex.test(value);
+    return {
+        value,
+        valid,
+        errorMessage: !valid ? message : 'Valid'
+    };
+}
+```
+# Функція `checkData`
+
+Функція `checkData` використовується для перевірки даних введення в реальному часі, відображаючи повідомлення про помилку або підтвердження і керуючи станом кнопки відправки форми.
+
+## Сигнатура
+
+```javascript
+function checkData(e, el) {
+    switch (e.target.name) {
+        case el.dataset.error: {
+            formData[e.target.name] = setData(
+                /^\w+$/g,
+                e.target.value,
+                'Please enter a valid name'
+            );
+            el.innerText = formData[e.target.name].errorMessage;
+            form.elements.submit.disabled = !formData[e.target.name].valid;
+        }
+    }
+}
+```
+## Їх використання
+
+```javascript
+// Об'єкт для збереження стану полів форми
+const formData = {};
+
+// Функція `setData` для перевірки значень
+function setData(regex, value, message) {
+    const valid = regex.test(value);
+    return {
+        value,
+        valid,
+        errorMessage: !valid ? message : 'Valid',
+    };
+}
+
+// Функція `checkData` для обробки перевірок
+function checkData(e, el) {
+    switch (e.target.name) {
+        case el.dataset.error: {
+            formData[e.target.name] = setData(
+                /^\w+$/g,
+                e.target.value,
+                'Please enter a valid name'
+            );
+            el.innerText = formData[e.target.name].errorMessage;
+            form.elements.submit.disabled = !formData[e.target.name].valid;
+        }
+    }
+}
+
+// Додаємо обробник подій до форми
+const form = document.getElementById('form');
+form.addEventListener('input', function (e) {
+    const errorElement = form.querySelector(`[data-error="${e.target.name}"]`);
+    if (errorElement) {
+        checkData(e, errorElement);
+    }
+});
+```
