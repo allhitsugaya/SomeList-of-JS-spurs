@@ -241,3 +241,32 @@ form.addEventListener('input', function (e) {
     }
 });
 ```
+## Пример 1: Проверка возраста пользователя
+
+### С использованием `if/else`:
+```javascript
+const age = 18;
+
+if (age >= 18) {
+  console.log("Доступ разрешён");
+} else {
+  console.log("Доступ запрещён");
+}
+```
+## Пример 2: Проверка возраста пользователя
+
+### С использованием `Тернарный оператор`:
+```javascript
+const age = 18;
+console.log(age >= 18 ? "Доступ разрешён" : "Доступ запрещён");
+```
+## `jQuery`
+
+### Создание элементов в DOM:
+```javascript
+const newDiv = $('<div>', {
+    id: 'myDiv',
+    class: 'container',
+    'data-info': 'example'
+ });
+```
